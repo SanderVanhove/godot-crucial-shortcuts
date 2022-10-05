@@ -1,0 +1,10 @@
+[gd_scene format=2]
+
+[node name="Secondary" type="Node2D"]
+
+[node name="Label" type="Label" parent="."]
+margin_left = 474.0
+margin_top = 235.0
+margin_right = 514.0
+margin_bottom = 249.0
+text = "Secondary"
