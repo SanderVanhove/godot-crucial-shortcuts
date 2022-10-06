@@ -2,9 +2,29 @@ tool
 extends EditorPlugin
 
 
+var debug = preload("res://addons/crucial_shortcuts/debug.gd")
+
+
 var _last_played_scene: String
 
 # TODO: Close and reopen a script
+
+
+func _ready():
+#	debug.print_all_nodes(get_tree().root)
+	pass
+	
+	
+func _enter_tree():
+	var button: Button = Button.new()
+	button.text = "Play Memorized Scene"
+	button.hint_tooltip = "Play Last Memorized Scene"
+	
+	var play_buttons_container: Control = _get_play_button_control_group(get_tree().root)
+	play_buttons_container.add_child(button)
+	
+	var c = button.connect("pressed", self, "play_last_played_scene")
+	assert(c == OK)
 
 
 func _unhandled_key_input(event: InputEventKey) -> void:
@@ -73,3 +93,14 @@ func play_last_played_scene():
 	if _last_played_scene.empty(): return
 	
 	get_editor_interface().play_custom_scene(_last_played_scene)
+	
+	
+func _get_play_button_control_group(node: Node) -> Node:
+	if "hint_tooltip" in node and node.hint_tooltip == "Play the project.":
+		return node.get_parent()
+	
+	for n in node.get_children():
+		var parent: Control = _get_play_button_control_group(n)
+		if parent: return parent
+		
+	return null
